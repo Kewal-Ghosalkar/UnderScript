@@ -5,6 +5,7 @@ const canvEl = document.getElementById("c")
 const ctx = canvEl.getContext("2d")
 
 const healthEl = document.getElementById("health-el")
+const scoreEl = document.getElementById("score-el")
 
 //Drawing Sizes
 const bbThickness = 5
@@ -25,13 +26,13 @@ let player = {
     coolTime: 5,
     coolTimeStr: 1000,
     coolDown: false,
-    coolAnim: false
+    coolAnim: false,
+    score: 0,
+    scoreOld: 0
 }
 
 //Attacks
 let bar = []
-
-let atkNo = 4
 
 let bullets = {
     straight(xRel, yRel, xVel, yVel) {
@@ -66,7 +67,8 @@ let bullets = {
     }
 }
 
-let aco = 4
+let aco = 0
+let atkNo = 2
 
 let attacks = [
     //Circle
@@ -202,6 +204,29 @@ let attacks = [
                 bar.push(bullets.speed(xx, yy, (dx/norm) * 0.001, (dy/norm) * 0.001))
             }
         }
+    },
+    //Grid
+    function() {
+        const del = 800
+        if ((fc-aco) > del && fc > 240) {
+            aco = fc
+            for (let i = 0 + 140*Math.random(); i < canvEl.width; i+=70) {
+                let xx = i
+                let yy = 0
+                bar.push(bullets.speed(xx, yy, 0, 0.0005))
+                bar.push(bullets.speed(xx, yy, 0, 0.0004))
+                bar.push(bullets.speed(xx, yy, 0, 0.0003))
+                bar.push(bullets.speed(xx, yy, 0, 0.0002))
+            }
+            for (let i = 0 + 140*Math.random(); i < canvEl.width; i+=70) {
+                let xx = 0
+                let yy = i
+                bar.push(bullets.speed(xx, yy, 0.0005, 0))
+                bar.push(bullets.speed(xx, yy, 0.0004, 0))
+                bar.push(bullets.speed(xx, yy, 0.0003, 0))
+                bar.push(bullets.speed(xx, yy, 0.0002, 0))
+            }
+        }
     }
 ]
 
@@ -249,7 +274,7 @@ function setTime() {
 
 function setCanvas() {
     canvEl.width = window.innerWidth - 50
-    canvEl.height = window.innerHeight - 90
+    canvEl.height = window.innerHeight - 120
 
     bbStartX = canvEl.width/2 - bbSize/2
     bbStartY = canvEl.height/2 - bbSize/2
@@ -382,6 +407,13 @@ function update() {
         drawScreen()
 
         if (fc % 100 == 0)  player.health++
+
+        player.score = Math.floor(fc/1000)
+
+        if (player.scoreOld != player.score) {
+            player.scoreOld = player.score
+            scoreEl.textContent = "Score: " + player.score
+        }
         
 
         requestAnimationFrame(update)
@@ -389,7 +421,7 @@ function update() {
     }
     else {
         ctx.clearRect(0, 0, canvEl.width, canvEl.height);
-        healthEl.textContent = "Health: 0"
+        healthEl.textContent = "Game Over"
     }
 }
 
