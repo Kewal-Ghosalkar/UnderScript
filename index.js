@@ -68,7 +68,7 @@ let bullets = {
 }
 
 let aco = 0
-let atkNo = 2
+let atkNo = 8
 
 let attacks = [
     //Circle
@@ -93,30 +93,6 @@ let attacks = [
             bar.push(bullets.straight(xx, yy, 0, 0.007))
             bar.push(bullets.straight(xx, yy, -0.007, 0))
             bar.push(bullets.straight(xx, yy, 0, -0.007))
-        }
-    },
-    //Slow Snipe
-    function() {
-        const del = 150
-        if ((fc-aco) > del && fc > 240) {
-            let xx
-            let yy
-
-            aco = fc
-
-            while (!((xx < bbStartX || xx > bbEndX) || (yy < bbStartY || yy > bbEndY))) {
-                xx = Math.random() * canvEl.width
-                yy = Math.random() * canvEl.height
-            }
-
-            let dx = player.x - xx
-            let dy = player.y - yy
-            let norm = Math.sqrt(dx*dx + dy*dy)
-
-
-            //console.log([xx, yy, dx/norm, dy/norm])
-
-            bar.push(bullets.straight(xx, yy, (dx/norm) * 0.01, (dy/norm) * 0.01))
         }
     },
     //Speed Snipe
@@ -225,6 +201,112 @@ let attacks = [
                 bar.push(bullets.speed(xx, yy, 0.0004, 0))
                 bar.push(bullets.speed(xx, yy, 0.0003, 0))
                 bar.push(bullets.speed(xx, yy, 0.0002, 0))
+            }
+        }
+    },
+    //Slow Snipe
+    function() {
+        const del = 150
+        if ((fc-aco) > del && fc > 240) {
+            let xx
+            let yy
+
+            aco = fc
+
+            while (!((xx < bbStartX || xx > bbEndX) || (yy < bbStartY || yy > bbEndY))) {
+                xx = Math.random() * canvEl.width
+                yy = Math.random() * canvEl.height
+            }
+
+            let dx = player.x - xx
+            let dy = player.y - yy
+            let norm = Math.sqrt(dx*dx + dy*dy)
+
+
+            //console.log([xx, yy, dx/norm, dy/norm])
+
+            bar.push(bullets.straight(xx, yy, (dx/norm) * 0.01, (dy/norm) * 0.01))
+        }
+    },
+    //Spiral
+    function() {
+        const del = 50
+        if ((fc-aco) > del && fc > 240) {
+
+        let radius = 300; 
+        let angle = fc / 240; 
+
+        let xx = canvEl.width/2 + Math.sin(angle) * radius;
+        let yy = canvEl.height/2 + Math.cos(angle) * radius;
+
+            aco = fc
+
+            let dx = canvEl.width/2 - xx
+            let dy = canvEl.height/2 - yy
+            let norm = Math.sqrt(dx*dx + dy*dy)
+
+            console.log([bar, norm])
+
+            bar.push(bullets.speed(xx, yy, (dx/norm) * 0.00005, (dy/norm) * 0.00005))
+            bar.push(bullets.speed(xx, yy, (dx/norm) * 0.00004, (dy/norm) * 0.00004))
+            bar.push(bullets.speed(xx, yy, (dx/norm) * 0.00003, (dy/norm) * 0.00003))
+            bar.push(bullets.speed(xx, yy, (dx/norm) * 0.00002, (dy/norm) * 0.00002))
+            bar.push(bullets.speed(xx, yy, (dx/norm) * 0.00001, (dy/norm) * 0.00001))
+        }
+    },
+    //Spiral 2
+    function() {
+        const del = 100
+        if ((fc-aco) > del && fc > 240) {
+
+        let radius = 300; 
+        let angle = Math.random()*6.28
+
+        let xx = canvEl.width/2 + Math.sin(angle) * radius;
+        let yy = canvEl.height/2 + Math.cos(angle) * radius;
+
+            aco = fc
+
+            let dx = canvEl.width/2 - xx
+            let dy = canvEl.height/2 - yy
+            let norm = Math.sqrt(dx*dx + dy*dy)
+
+            console.log([bar, norm])
+
+            bar.push(bullets.speed(xx, yy, (dx/norm) * 0.005, (dy/norm) * 0.005))
+            bar.push(bullets.speed(xx, yy, (dx/norm) * 0.004, (dy/norm) * 0.004))
+            bar.push(bullets.speed(xx, yy, (dx/norm) * 0.003, (dy/norm) * 0.003))
+            bar.push(bullets.speed(xx, yy, (dx/norm) * 0.002, (dy/norm) * 0.002))
+            bar.push(bullets.speed(xx, yy, (dx/norm) * 0.001, (dy/norm) * 0.001))
+        }
+    },
+    //Speed Snipe Quad
+    function() {
+        const del = 750
+        if ((fc-aco) > del && fc > 240) {
+            for (let i = 0; i < 4; i++) {
+                let xx
+                let yy
+
+                aco = fc
+
+                while (!((xx < bbStartX || xx > bbEndX) || (yy < bbStartY || yy > bbEndY))) {
+                    xx = Math.random() * canvEl.width
+                    yy = Math.random() * canvEl.height
+                }
+
+                let dx = player.x - xx
+                let dy = player.y - yy
+                let norm = Math.sqrt(dx*dx + dy*dy)
+
+
+                //console.log([xx, yy, dx/norm, dy/norm])
+
+                bar.push(bullets.speed(xx, yy, (dx/norm) * 0.005, (dy/norm) * 0.005))
+                bar.push(bullets.speed(xx, yy, (dx/norm) * 0.004, (dy/norm) * 0.004))
+                bar.push(bullets.speed(xx, yy, (dx/norm) * 0.003, (dy/norm) * 0.003))
+                bar.push(bullets.speed(xx, yy, (dx/norm) * 0.002, (dy/norm) * 0.002))
+                bar.push(bullets.speed(xx, yy, (dx/norm) * 0.001, (dy/norm) * 0.001))
             }
         }
     }
@@ -398,7 +480,7 @@ function update() {
 
         if (fc > (atkNo + 1) * 5000) {
             atkNo++
-            console.log(fc)
+            console.log(atkNo)
         }
 
         attacks[atkNo%attacks.length]()
