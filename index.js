@@ -70,7 +70,7 @@ let bullets = {
 }
 
 let aco = 0
-let atkNo = 7
+let atkNo = 0
 
 let attacks = [
     //Circle
