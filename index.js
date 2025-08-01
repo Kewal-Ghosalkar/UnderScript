@@ -20,7 +20,7 @@ let player = {
     size: 23,
     x: canvEl.width/2,
     y: canvEl.height/2,
-    speed: 0,
+    speed: 0.38,
     health: 100,
     healthOld: 0,
     healthTime: 0,
@@ -127,7 +127,7 @@ let attacks = [
     },
     //Random Snipe
     function() {
-        const del = 15
+        const del = 1
         if ((fc-aco) > del && fc > 240) {
             let xx
             let yy
@@ -158,7 +158,7 @@ let attacks = [
     },
     //Speed Snipe Double
     function() {
-        const del = 50
+        const del = 1
         if ((fc-aco) > del && fc > 240) {
             for (let i = 0; i < 2; i++) {
                 let xx
@@ -188,7 +188,7 @@ let attacks = [
     },
     //Grid
     function() {
-        const del = 80
+        const del = 1
         if ((fc-aco) > del && fc > 240) {
             aco = fc
             for (let i = 0 + 140*Math.random(); i < canvEl.width; i+=70) {
@@ -211,7 +211,7 @@ let attacks = [
     },
     //Slow Snipe
     function() {
-        const del = 15
+        const del = 1
         if ((fc-aco) > del && fc > 240) {
             let xx
             let yy
@@ -235,7 +235,7 @@ let attacks = [
     },
     //Spiral
     function() {
-        const del = 5
+        const del = 1
         if ((fc-aco) > del && fc > 240) {
 
             let radius = 300; 
@@ -259,7 +259,7 @@ let attacks = [
     },
     //Grid 2 
     function() {
-        const del = 100
+        const del = 1
         if ((fc-aco) > del && fc > 240) {
             aco = fc
 
@@ -291,7 +291,7 @@ let attacks = [
     },
     //Speed Snipe Quad
     function() {
-        const del = 750
+        const del = 1
         if ((fc-aco) > del && fc > 240) {
             for (let i = 0; i < 4; i++) {
                 let xx
