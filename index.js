@@ -20,7 +20,7 @@ let player = {
     size: 23,
     x: canvEl.width/2,
     y: canvEl.height/2,
-    speed: 0.38,
+    speed: 0,
     health: 100,
     healthOld: 0,
     healthTime: 0,
