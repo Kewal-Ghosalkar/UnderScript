@@ -44,6 +44,7 @@ let bullets = {
             y: yRel,
             speedx: xVel * deltaTime,
             speedy: yVel * deltaTime,
+            spawn: fc,
             laser: false,
 
             updateSpeed() {
@@ -66,6 +67,52 @@ let bullets = {
                 this.speedy *= 1+(fc-this.spawn)/5000
             }
         }
+    },
+    spiral(xRel, yRel, cmax, xVel) {
+        return {
+            size: 0,
+            x: xRel,
+            y: yRel,
+            speedx: xVel,
+            speedy: 0,
+            spawn: fc,
+            laser: false,
+            count: 0,
+
+            updateSpeed() {
+                if (fc-this.spawn > 50) {
+                    this.count += 1
+                    if (this.count < cmax) {
+                        angle = fc/10.0
+                        bar.push(bullets.straight(this.x, this.y, 0.005 * Math.sin(angle) , 0.005 * Math.cos(angle)))
+                        this.spawn = fc
+                    }
+                }
+            }
+        }
+    },
+    spiral_fast(xRel, yRel, cmax, xVel) {
+        return {
+            size: 0,
+            x: xRel,
+            y: yRel,
+            speedx: xVel,
+            speedy: 0,
+            spawn: fc,
+            laser: false,
+            count: 0,
+
+            updateSpeed() {
+                if (fc-this.spawn > 20) {
+                    this.count += 1
+                    if (this.count < cmax) {
+                        angle = fc/10
+                        bar.push(bullets.straight(this.x, this.y, 0.01 * Math.sin(angle) , 0.01 * Math.cos(angle)))
+                        this.spawn = fc
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -73,8 +120,35 @@ let aco = 0
 let stall = 0
 let stall_diff = 500
 let atkNo = 0
+let asf = true
 
 let attacks = [
+    //Asgore
+    function() {
+        if (fc-stall > stall_diff && asf) {
+            bar.push(bullets.spiral_fast(0, 0, 1000, 3))
+            asf = false
+        }
+    },
+    
+    //Spinner
+    function() {
+        const del = 1000
+        if ((fc-aco) > del && fc-stall > stall_diff) {
+            let xx
+            let yy
+
+            aco = fc
+
+            while (!((xx < bbStartX || xx > bbEndX) || (yy < bbStartY || yy > bbEndY))) {
+                xx = Math.random() * canvEl.width
+                yy = Math.random() * canvEl.height
+            }
+
+            bar.push(bullets.spiral(xx, yy, 30, 0))
+        }
+    },
+    
     //Circle
     function() {
         const del = 300
@@ -447,7 +521,7 @@ function drawScreen() {
     ctx.fillStyle = "#ffffff"
 
     for (let i = 0; i < bar.length; i++) {
-        if (bar[i].x < 0 || bar[i].x > canvEl.width || bar[i].y < 0 || bar[i].y > canvEl.height) {
+        if (bar[i].x < 0 || bar[i].x > canvEl.width || bar[i].y < 0 || bar[i].y > canvEl.height || fc-bar[i].spawn > 10000) {
             bar.splice(i, 1)
             continue
         }
@@ -491,6 +565,7 @@ function update() {
 
         if ((fc - atkTimer) > 5000) {
             atkNo = Math.floor(attacks.length * Math.random())
+            asf = true
             stall = fc
             atkTimer = fc
             console.log(atkNo)
@@ -521,6 +596,8 @@ function update() {
         ctx.clearRect(0, 0, canvEl.width, canvEl.height);
         healthEl.textContent = "Game Over"
     }
+
+    //console.log(bar)
 }
 
 
