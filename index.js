@@ -123,10 +123,55 @@ let atkNo = 0
 let asf = true
 
 let attacks = [
+    //Lines
+    function() {
+        const del = 400
+        if ((fc-aco) > del && fc-stall > stall_diff) {
+            let xx
+            let yy
+
+            aco = fc
+
+            while (!((xx < bbStartX || xx > bbEndX) && (yy < bbStartY || yy > bbEndY))) {
+                xx = Math.random() * canvEl.width
+                yy = Math.random() * canvEl.height
+            }
+
+            let px = bbStartX + Math.random()*(bbEndX - bbStartX)
+            let py = bbStartY + Math.random()*(bbEndY - bbStartY)
+
+            let dx = px - xx
+            let dy = py - yy
+            let norm = Math.sqrt(dx*dx + dy*dy)
+
+
+            //console.log([xx, yy, dx/norm, dy/norm])
+
+            let sp = 0.0005
+
+            bar.push(bullets.speed(xx, yy, (dx/norm) * sp, (dy/norm) * sp))
+
+            bar.push(bullets.speed(xx-(20*(dy/norm)), yy+(20*(dx/norm)), (dx/norm) * sp, (dy/norm) * sp))
+            bar.push(bullets.speed(xx-(40*(dy/norm)), yy+(40*(dx/norm)), (dx/norm) * sp, (dy/norm) * sp))
+            bar.push(bullets.speed(xx-(60*(dy/norm)), yy+(60*(dx/norm)), (dx/norm) * sp, (dy/norm) * sp))
+
+            bar.push(bullets.speed(xx+(20*(dy/norm)), yy-(20*(dx/norm)), (dx/norm) * sp, (dy/norm) * sp))
+            bar.push(bullets.speed(xx+(40*(dy/norm)), yy-(40*(dx/norm)), (dx/norm) * sp, (dy/norm) * sp))
+            bar.push(bullets.speed(xx+(60*(dy/norm)), yy-(60*(dx/norm)), (dx/norm) * sp, (dy/norm) * sp))
+        }
+    },
+
     //Asgore
     function() {
         if (fc-stall > stall_diff && asf) {
             bar.push(bullets.spiral_fast(0, 0, 1000, 3))
+            asf = false
+        }
+    },
+    //Asgore
+    function() {
+        if (fc-stall > stall_diff && asf) {
+            bar.push(bullets.spiral_fast(0, canvEl.height-1, 1000, 3))
             asf = false
         }
     },
