@@ -70,13 +70,15 @@ let bullets = {
 }
 
 let aco = 0
+let stall = 0
+let stall_diff = 500
 let atkNo = 0
 
 let attacks = [
     //Circle
     function() {
         const del = 300
-        if ((fc-aco) > del && fc > 240) {
+        if ((fc-aco) > del && fc-stall > stall_diff) {
             let xx
             let yy
 
@@ -100,7 +102,7 @@ let attacks = [
     //Speed Snipe
     function() {
         const del = 400
-        if ((fc-aco) > del && fc > 240) {
+        if ((fc-aco) > del && fc-stall > stall_diff) {
             let xx
             let yy
 
@@ -128,7 +130,7 @@ let attacks = [
     //Random Snipe
     function() {
         const del = 150
-        if ((fc-aco) > del && fc > 240) {
+        if ((fc-aco) > del && fc-stall > stall_diff) {
             let xx
             let yy
 
@@ -159,7 +161,7 @@ let attacks = [
     //Speed Snipe Double
     function() {
         const del = 500
-        if ((fc-aco) > del && fc > 240) {
+        if ((fc-aco) > del && fc-stall > stall_diff) {
             for (let i = 0; i < 2; i++) {
                 let xx
                 let yy
@@ -189,7 +191,7 @@ let attacks = [
     //Grid
     function() {
         const del = 800
-        if ((fc-aco) > del && fc > 240) {
+        if ((fc-aco) > del && fc-stall > stall_diff) {
             aco = fc
             for (let i = 0 + 140*Math.random(); i < canvEl.width; i+=70) {
                 let xx = i
@@ -212,7 +214,7 @@ let attacks = [
     //Slow Snipe
     function() {
         const del = 150
-        if ((fc-aco) > del && fc > 240) {
+        if ((fc-aco) > del && fc-stall > stall_diff) {
             let xx
             let yy
 
@@ -236,7 +238,7 @@ let attacks = [
     //Spiral
     function() {
         const del = 50
-        if ((fc-aco) > del && fc > 240) {
+        if ((fc-aco) > del && fc-stall > stall_diff) {
 
             let radius = 300; 
             let angle = fc / 240; 
@@ -260,7 +262,7 @@ let attacks = [
     //Grid 2 
     function() {
         const del = 100
-        if ((fc-aco) > del && fc > 240) {
+        if ((fc-aco) > del && fc-stall > stall_diff) {
             aco = fc
 
             let xx = Math.random() * canvEl.width
@@ -292,7 +294,7 @@ let attacks = [
     //Speed Snipe Quad
     function() {
         const del = 750
-        if ((fc-aco) > del && fc > 240) {
+        if ((fc-aco) > del && fc-stall >stall_diff) {
             for (let i = 0; i < 4; i++) {
                 let xx
                 let yy
@@ -489,16 +491,18 @@ function update() {
 
         if ((fc - atkTimer) > 5000) {
             atkNo = Math.floor(attacks.length * Math.random())
+            stall = fc
             atkTimer = fc
             console.log(atkNo)
         }
 
+        
         attacks[atkNo%attacks.length]()
         updatePlayer()
         updatebullet()
         drawScreen()
 
-        if (fc-player.healthTime > 500)  {
+        if (fc-player.healthTime > 700)  {
             player.health++
             player.healthTime = fc
         }
